@@ -11,6 +11,7 @@ public class BoxMove : MonoBehaviour
     [SerializeField] private string _name;
     [SerializeField] private Color _bodyColor;
     [SerializeField] private Vector3 _startPosition;
+    [SerializeField] private Vector3 _startEulerAngles;
     [SerializeField] private bool _isAlive;
 
     [SerializeField] private Light _sun;
@@ -22,12 +23,13 @@ public class BoxMove : MonoBehaviour
     {
         transform.localScale = new Vector3(1, _height, 1);
         gameObject.name = _name;
-        gameObject.GetComponent<Renderer>().material.color = _bodyColor;
+        //gameObject.GetComponent<Renderer>().material.color = _bodyColor;
         transform.position = _startPosition;
+        transform.eulerAngles = _startEulerAngles;
         gameObject.SetActive(_isAlive);
 
         _sun.intensity = 2;
-        _sun.color = Color.blue;
+        _sun.color = Color.cyan;
         //_camera.fieldOfView = 120;
     }
 
@@ -40,29 +42,53 @@ public class BoxMove : MonoBehaviour
         _ball.position = transform.position + new Vector3(0, 0.5f, 0);
         if (Input.GetKey(KeyCode.W))
         {
+            transform.eulerAngles -= new Vector3(0, 0, 0.5f);
+            transform.position += new Vector3(0.03f, 0, 0);
             _camera.transform.position += new Vector3(0.03f, 0, 0);
             _ball.GetComponent<Renderer>().material.color = Color.green;
         }
         if (Input.GetKey(KeyCode.S))
         {
+            transform.eulerAngles += new Vector3(0, 0, 0.5f);
+            transform.position -= new Vector3(0.03f, 0, 0);
             _camera.transform.position -= new Vector3(0.03f, 0, 0);
             _ball.GetComponent<Renderer>().material.color = Color.red;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            _camera.transform.position += new Vector3(0, 0, 0.03f);
+            transform.eulerAngles += new Vector3(0.5f, 0, 0);
+            transform.position += new Vector3(0, 0, 0.03f);
             _ball.GetComponent<Renderer>().material.color = Color.blue;
         }
         if (Input.GetKey(KeyCode.D))
         {
-            _camera.transform.position -= new Vector3(0, 0, 0.03f);
+            transform.eulerAngles -= new Vector3(0.5f, 0, 0);
+            transform.position -= new Vector3(0, 0, 0.03f);
             _ball.GetComponent<Renderer>().material.color = Color.black;
+        }
+        if (Input.GetKey(KeyCode.Space))
+        {
+            transform.position += new Vector3(0, 0.03f, 0);
+            _ball.GetComponent<Renderer>().material.color = Color.cyan;
+        }
+        if (Input.GetKey(KeyCode.Q))//это поворот
+        {
+            transform.eulerAngles -= new Vector3(0, 0, 0.5f); 
+            transform.position += new Vector3(0.03f, 0, 0);
+            _camera.transform.position += new Vector3(0.03f, 0, 0);
+            _ball.GetComponent<Renderer>().material.color = Color.cyan;
+        }
+        if (transform.position.y > 0.94 && !(Input.GetKey(KeyCode.Space)))
+        {
+            transform.position -= new Vector3(0, 0.03f, 0);
         }
         if (Input.GetMouseButton(0))
         {
             transform.localScale *= 1.01f;
         }
+        
 
-        _camera.transform.localEulerAngles = new Vector3(0, Input.mousePosition.x, 0);
+        //_camera.transform.localEulerAngles = new Vector3(0, Input.mousePosition.x, 0);
+        
     }
 }
