@@ -7,19 +7,14 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float _speed;
     private float _OldMousePositionX;
     private float _eularY;
+    [SerializeField] Animator _animator;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             _OldMousePositionX = Input.mousePosition.x;//чтобы не было рывков, после опускания клавиши мыши и следующего нажатия
+            _animator.SetBool("Run", true);
         }
         if (Input.GetMouseButton(0))
         {
@@ -35,5 +30,9 @@ public class PlayerMove : MonoBehaviour
             transform.eulerAngles = new Vector3(0, _eularY, 0);
         }
         
+        if(Input.GetMouseButtonUp(0))
+        {
+            _animator.SetBool("Run", false);
+        }
     }
 }
